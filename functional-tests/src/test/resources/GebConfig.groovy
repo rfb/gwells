@@ -1,6 +1,6 @@
 /*
 	This is the Geb configuration file.
-	
+
 	See: http://www.gebish.org/manual/current/#configuration
 */
 
@@ -23,13 +23,13 @@ waiting {
 atCheckWaiting = true
 
 environments {
-	
+
 	// run via “./gradlew chromeTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver
 	chrome {
-		driver = { 
+		driver = {
 			ChromeOptions o = new ChromeOptions()
-			o.addArguments("start-maximized")
+			o.addArguments("window-size=1600,900")
 			new ChromeDriver(o)
 			}
 	}
@@ -40,27 +40,32 @@ environments {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
 			o.addArguments('headless')
-			o.addArguments('disable-gpu') 
+			o.addArguments('disable-gpu')
 			o.addArguments('no-sandbox')
 			o.addArguments("window-size=1600,900")
 			new ChromeDriver(o)
 		}
 	}
-	
+
 	// run via “./gradlew firefoxTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver
 	firefox {
-		driver = { new FirefoxDriver() }
+		driver = {
+      FirefoxOptions o = new FirefoxOptions()
+      o.addArguments("-window-size=1600,900")
+      new FirefoxDriver(o)
+    }
 	}
-		
+
 	firefoxHeadless {
 		driver = {
 			FirefoxOptions o = new FirefoxOptions()
 			o.addArguments("-headless")
+      o.addArguments("-window-size=1600,900")
 			new FirefoxDriver(o)
 		}
 	}
-	
+
 	// run via “./gradlew ieTest”
 	// See: https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver
 	ie {
@@ -69,8 +74,8 @@ environments {
 		d.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING,true);
 		d.setCapability(InternetExplorerDriver.NATIVE_EVENTS,false);
 		d.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS,true);
-		
-		driver = { new InternetExplorerDriver(d) }	
+
+		driver = { new InternetExplorerDriver(d) }
 	}
 
 	// run via “./gradlew edgeTest”
@@ -92,7 +97,7 @@ baseNavigatorWaiting = true
 
 // Allows for setting you baseurl in an environment variable.
 // This is particularly handy for development and the pipeline
-def env = System.getenv()
+Map env = System.getenv()
 baseUrl = env['BASEURL']
 if (!baseUrl) {
 	//baseUrl = "http://localhost:8000/"
@@ -102,9 +107,11 @@ if (!baseUrl) {
 	//baseUrl = "https://apps.nrs.gov.bc.ca/" //Prod
 }
 
+println "--------------------------------------"
 println "BaseURL: ${baseUrl}"
-println "--------------------------"
+println "--------------------------------------"
 
+autoClearCookies = true
+autoClearWebStorage = true
 cacheDriverPerThread = true
 quitCachedDriverOnShutdown = true
-
